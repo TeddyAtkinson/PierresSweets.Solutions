@@ -57,5 +57,13 @@ namespace PierresTreats.Controllers
       var chosenFlavor = _db.Flavors.FirstOrDefault(flavor => flavor.FlavorId == id);
       return View(chosenFlavor);
     }
+
+    [HttpPost]
+    public ActionResult Edit(Flavor flavor)
+    {
+      _db.Entry(flavor).State = EntityState.Modified;
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
   }
 }
