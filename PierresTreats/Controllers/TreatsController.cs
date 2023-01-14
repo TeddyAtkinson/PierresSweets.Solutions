@@ -60,5 +60,11 @@ namespace PierresTreats.Controllers
         .FirstOrDefault(treat => treat.TreatId == id);
       return View(chosenTreat);
     }
+
+    public ActionResult Edit(int id)
+    {
+      var chosenTreat = _db.Treats.FirstOrDefault(treat => treat.TreatId == id);
+      return View(chosenTreat);
+    }
   }
 }
