@@ -51,5 +51,11 @@ namespace PierresTreats.Controllers
         .FirstOrDefault(flavor => flavor.FlavorId == id);
       return View(chosenFlavor);
     }
+
+    public ActionResult Edit(int id)
+    {
+      var chosenFlavor = _db.Flavors.FirstOrDefault(flavor => flavor.FlavorId == id);
+      return View(chosenFlavor);
+    }
   }
 }
