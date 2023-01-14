@@ -6,6 +6,10 @@
     <link rel="stylesheet" href="~/css/styles.css">
   </head>
   <body>
-    @RenderBody()
+    <div class="container d-flex flex-column jumbotron bg-white shadow text-center mt-4">
+      @await Html.PartialAsync("NavBar")
+      @RenderBody()
+    </div>
   </body>
+  
 </html>
