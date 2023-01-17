@@ -21,10 +21,10 @@ else
     {
       <li>@join.Treat.Name | 
         <span class="btn-group">
-          @using (Html.BeginForm("Delete", "Flavors"))
+          @using (Html.BeginForm("DeleteTreat", "Flavors"))
           {
             @Html.Hidden("joinId", @join.FlavorTreatId)
-            <input type="submit" value="Delete" class="btn btn-link btn-sm" />
+            <input type="submit" value="Delete Treat" class="btn btn-link btn-sm" />
           }
         </span>
       </li>
