@@ -33,12 +33,7 @@ else
 }
 
 <h4>Treat options:</h4>
-<button>
-  @Html.ActionLink("Add flavor", "AddFlavor", new { id = Model.TreatId })
-</button>
-<button>
-  @Html.ActionLink("Edit treat details", "Edit", new { id = Model.TreatId })
-</button>
-<button>
-  @Html.ActionLink("Delete treat", "Delete", new { id = Model.TreatId })
-</button>
+
+@Html.ActionLink("Add flavor", "AddFlavor", new { id = Model.TreatId })
+@Html.ActionLink("Edit treat details", "Edit", new { id = Model.TreatId })
+@Html.ActionLink("Delete treat", "Delete", new { id = Model.TreatId })
