@@ -45,17 +45,18 @@ namespace PierresTreats.Controllers
     [AllowAnonymous]
     public ActionResult Details(int id)
     {
-      var chosenFlavor = _db.Flavors
+      ViewBag.Treats = _db.Treats.ToList();
+      Flavor thisFlavor = _db.Flavors
         .Include(flavor => flavor.JoinEntities)
         .ThenInclude(join => join.Treat)
         .FirstOrDefault(flavor => flavor.FlavorId == id);
-      return View(chosenFlavor);
+      return View(thisFlavor);
     }
 
     public ActionResult Edit(int id)
     {
-      var chosenFlavor = _db.Flavors.FirstOrDefault(flavor => flavor.FlavorId == id);
-      return View(chosenFlavor);
+      Flavor thisFlavor = _db.Flavors.FirstOrDefault(flavor => flavor.FlavorId == id);
+      return View(thisFlavor);
     }
 
     [HttpPost]
@@ -68,9 +69,9 @@ namespace PierresTreats.Controllers
 
     public ActionResult AddTreat(int id)
     {
-      var chosenFlavor = _db.Flavors.FirstOrDefault(flavor => flavor.FlavorId == id);
+      Flavor thisFlavor = _db.Flavors.FirstOrDefault(flavor => flavor.FlavorId == id);
       ViewBag.TreatId = new SelectList(_db.Treats, "TreatId", "Name");
-      return View(chosenFlavor);
+      return View(thisFlavor);
     }
 
     [HttpPost]
