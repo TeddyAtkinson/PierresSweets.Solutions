@@ -36,31 +36,31 @@ namespace PierresTreats.Controllers
     }
 
     [HttpPost]
-    public async Task<ActionResult> Create(Treat treat, int FlavorId)
+    [HttpPost]
+    public ActionResult Create(Treat treat)
     {
-      var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-      var currentUser = await _userManager.FindByIdAsync(userId);
-      treat.User = currentUser;
-      _db.Treats.Add(treat);
-      _db.SaveChanges();
-      if (FlavorId != 0)
+      if (!ModelState.IsValid)
       {
-        _db.FlavorTreat.Add(new FlavorTreat() { FlavorId = FlavorId, TreatId = treat.TreatId });
+        return View(treat);
       }
-      _db.SaveChanges();
-      return RedirectToAction("Index");
+      else
+      {
+        _db.Treats.Add(treat);
+        _db.SaveChanges();
+        return RedirectToAction("Index");
+      }
     }
 
     [AllowAnonymous]
-  public ActionResult Details(int id)
-  {
-    ViewBag.Flavors = _db.Flavors.ToList();
-    Treat thisTreat = _db.Treats
-      .Include(treat => treat.JoinEntities)
-      .ThenInclude(join => join.Flavor)
-      .FirstOrDefault(treat => treat.TreatId == id);
-    return View(thisTreat);
-  }
+    public ActionResult Details(int id)
+    {
+      ViewBag.Flavors = _db.Flavors.ToList();
+      Treat thisTreat = _db.Treats
+        .Include(treat => treat.JoinEntities)
+        .ThenInclude(join => join.Flavor)
+        .FirstOrDefault(treat => treat.TreatId == id);
+      return View(thisTreat);
+    }
 
     public ActionResult Edit(int id)
     {
@@ -92,24 +92,24 @@ namespace PierresTreats.Controllers
     }
 
     public ActionResult AddFlavor(int id)
-  {
-    Treat thisTreat = _db.Treats.FirstOrDefault(treat => treat.TreatId == id);
-    ViewBag.FlavorId = new SelectList(_db.Flavors, "FlavorId", "Description");
-    return View(thisTreat);
-  }
+    {
+      Treat thisTreat = _db.Treats.FirstOrDefault(treat => treat.TreatId == id);
+      ViewBag.FlavorId = new SelectList(_db.Flavors, "FlavorId", "Description");
+      return View(thisTreat);
+    }
 
     [HttpPost]
     public ActionResult AddFlavor(Treat treat, int flavorId)
     {
-      #nullable enable
-      FlavorTreat? joinEntity =_db.FlavorTreat.FirstOrDefault(join => (join.FlavorId == flavorId && join.TreatId == treat.TreatId));
-      #nullable disable
+#nullable enable
+      FlavorTreat? joinEntity = _db.FlavorTreat.FirstOrDefault(join => (join.FlavorId == flavorId && join.TreatId == treat.TreatId));
+#nullable disable
       if (joinEntity == null && flavorId != 0)
       {
         _db.FlavorTreat.Add(new FlavorTreat() { FlavorId = flavorId, TreatId = treat.TreatId });
         _db.SaveChanges();
       }
-      return RedirectToAction("Details", new { id = treat.TreatId});
+      return RedirectToAction("Details", new { id = treat.TreatId });
     }
 
     [HttpPost]

@@ -6,6 +6,9 @@
 
 <h3>Add a new flavor</h3>
 
+ <p>@Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger", @style = "font-weight: 600;" })
+  </p>
+
 @using (Html.BeginForm())
 {
   @Html.LabelFor(model => model.Description)
