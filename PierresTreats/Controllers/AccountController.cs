@@ -28,19 +28,35 @@ namespace PierresTreats.Controllers
     {
       return View();
     }
+    
+    public IActionResult AccessDenied()
+    {
+      return View();
+    }
 
     [HttpPost]
-    public async Task<ActionResult> Register(RegisterViewModel model)
+    public async Task<ActionResult> Register (RegisterViewModel model)
     {
-      var user = new ApplicationUser { UserName = model.Email};
-      IdentityResult result = await _userManager.CreateAsync(user, model.Password);
-      if (result.Succeeded)
+      if (!ModelState.IsValid)
       {
-        return RedirectToAction("Index");
+        return View(model);
       }
       else
       {
-        return View();
+        ApplicationUser user = new ApplicationUser { UserName = model.Email };
+        IdentityResult result = await _userManager.CreateAsync(user, model.Password);
+        if (result.Succeeded)
+        {
+          return RedirectToAction("Index");
+        }
+        else
+        {
+          foreach (IdentityError error in result.Errors)
+          {
+            ModelState.AddModelError("", error.Description);
+          }
+          return View(model);
+        }
       }
     }
 
@@ -52,14 +68,22 @@ namespace PierresTreats.Controllers
     [HttpPost]
     public async Task<ActionResult> Login(LoginViewModel model)
     {
-      Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, isPersistent: true, lockoutOnFailure: false);
-      if (result.Succeeded)
+      if (!ModelState.IsValid)
       {
-        return RedirectToAction("Index");
+        return View(model);
       }
       else
       {
-        return View();
+        Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, isPersistent: true, lockoutOnFailure: false);
+        if (result.Succeeded)
+        {
+          return RedirectToAction("Index");
+        }
+        else
+        {
+          ModelState.AddModelError("", "There is something wrong with your email or username. Please try again.");
+          return View(model);
+        }
       }
     }
     
