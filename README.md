@@ -32,7 +32,7 @@ This is an MVC application that showcases the Authorization of user with login a
 ```json
 {
   "ConnectionStrings": {
-      "DefaultConnection": "Server=localhost;Port=3306;database=erica-marroquin;uid=[YOUR-USERNAME-HERE];pwd=[YOUR-PASSWORD-HERE];"
+      "DefaultConnection": "Server=localhost;Port=3306;database=[YOUR-DB-NAME];uid=[YOUR-USERNAME-HERE];pwd=[YOUR-PASSWORD-HERE];"
   }
 }
 ```
